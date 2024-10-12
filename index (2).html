@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DStv Packages</title>
+    <meta name="creator" content="Moses Kipkorir Cheruiyot">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.2em; /* Smaller font size */
+        }
+
+        p {
+            color: blue;
+            font-size: 0.9em; /* Smaller font size */
+        }
+
+        .microchip {
+            width: 259px;
+            height: 495px;
+            border: 3px solid black;
+            border-radius: 15px; /* Rounded corners for a microchip look */
+            background-color: grey;
+            position: relative;
+            padding: 5px; /* Reduced padding */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .div-2 {
+            border: 1px solid black; /* Reduced border size */
+            padding: 5px; /* Reduced padding */
+            background-color: white;
+            margin-top: 5px; /* Reduced margin */
+            cursor: pointer;
+            position: relative;
+            font-size: 0.8em; /* Smaller font size */
+        }
+
+        .div-2.active {
+            background-color: lightblue;
+        }
+
+        .sidekick {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 160px; /* Adjusted to fit better */
+            border: 1px solid black; /* Reduced border size */
+            padding: 5px; /* Reduced padding */
+            background-color: white;
+            z-index: 10;
+        }
+
+        .div-2.active .sidekick {
+            display: block;
+        }
+
+        .output {
+            border: 1px solid black; /* Reduced border size */
+            padding: 4px; /* Reduced padding */
+            margin-top: 10px; /* Reduced margin */
+            width: 98%; /* Adjusted to fit */
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .left-content {
+            width: 50%;
+        }
+
+        .right-content {
+            width: 50%;
+            border-left: 2px solid black; /* Reduced border size */
+            padding-left: 4px; /* Reduced padding */
+        }
+
+        select, input {
+            display: block;
+            margin-top: 5px; /* Reduced margin */
+            padding: 3px; /* Reduced padding */
+            font-size: 0.8em; /* Smaller font size */
+width: calc(100% - 7px); /* Fit input/select within container */
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px; /* Reduced margin */
+            font-size: 0.8em; /* Smaller font size */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="microchip">
+        <h1><b>DStv Packages</b></h1>
+        <p>Click on the DStv package to see upgrade options.</p>
+
+        <!-- Original set of divs -->
+        <div class="div-2" id="lite">
+            <b>DStv Lite</b>
+            <div class="sidekick">
+                <div class="div-2" onclick="selectNextPackage('access')"><b>DStv Access</b></div>
+                <div class="div-2" onclick="selectNextPackage('family')"><b>DStv Family</b></div>
+                <div class="div-2" onclick="selectNextPackage('compact')"><b>DStv Compact</b></div>
+                <div class="div-2" onclick="selectNextPackage('compactPlus')"><b>DStv Compact Plus</b></div>
+                <div class="div-2" onclick="selectNextPackage('premium')"><b>DStv Premium</b></div>
+            </div>
+        </div>
+
+        <div class="div-2" id="access">
+            <b>DStv Access</b>
+            <div class="sidekick">
+                <div class="div-2" onclick="selectNextPackage('family')"><b>DStv Family</b></div>
+                <div class="div-2" onclick="selectNextPackage('compact')"><b>DStv Compact</b></div>
+                <div class="div-2" onclick="selectNextPackage('compactPlus')"><b>DStv Compact Plus</b></div>
+                <div class="div-2" onclick="selectNextPackage('premium')"><b>DStv Premium</b></div>
+            </div>
+        </div>
+
+        <div class="div-2" id="family">
+            <b>DStv Family</b>
+            <div class="sidekick">
+                <div class="div-2" onclick="selectNextPackage('compact')"><b>DStv Compact</b></div>
+                <div class="div-2" onclick="selectNextPackage('compactPlus')"><b>DStv Compact Plus</b></div>
+                <div class="div-2" onclick="selectNextPackage('premium')"><b>DStv Premium</b></div>
+            </div>
+        </div>
+
+        <div class="div-2" id="compact">
+            <b>DStv Compact</b>
+            <div class="sidekick">
+                <div class="div-2" onclick="selectNextPackage('compactPlus')"><b>DStv Compact Plus</b></div>
+                <div class="div-2" onclick="selectNextPackage('premium')"><b>DStv Premium</b></div>
+            </div>
+        </div>
+
+        <div class="div-2" id="compactPlus">
+            <b>DStv Compact Plus</b>
+            <div class="sidekick">
+                <div class="div-2" onclick="selectNextPackage('premium')"><b>DStv Premium</b></div>
+            </div>
+        </div>
+
+        <div class="div-2" id="premium">
+            <b>DStv Premium</b>
+            <div class="sidekick">
+                <p>No further upgrades available.</p>
+            </div>
+        </div>
+
+        <!-- Output section -->
+        <div class="output">
+            <div class="left-content">
+                <!-- Date of Payment -->
+                <label for="payment-day">Date of Payment</label>
+                <select id="payment-day" onchange="calculateRemainingDays()">
+                    <option value="">Day</option>
+                    <script>
+                        for (let i = 1; i <= 31; i++) {
+                            document.write(`<option value="${i}">${i}</option>`);
+                        }
+                    </script>
+                </select>
+
+                <!-- Date of Upgrade -->
+                <label for="upgrade-day">Date of Upgrade</label>
+                <select id="upgrade-day" onchange="calculateRemainingDays()">
+                    <option value="">Day</option>
+                    <script>
+                        for (let i = 1; i <= 31; i++) {
+                            document.write(`<option value="${i}">${i}</option>`);
+                        }
+                    </script>
+                </select>
+
+                <!-- Balance Entry -->
+                <label for="balance-entry"><b>Balance Entry</b></label>
+                <input type="number" id="balance-entry" placeholder="Enter balance">
+
+                <!-- Remaining Days Label -->
+                <label for="remaining-days"><b>Remaining Days</b></label>
+                <span id="remaining-days">0</span> 
+            </div>
+
+            <!-- Right content -->
+            <div class="right-content">
+                <h5>Offer Filter</h5>
+                <p id="info-output">This section can contain extra details, calculations, or instructions.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPackage = '';
+        let nextPackage = '';
+        const packagePrices = {
+            lite: 700,
+            access: 1300,
+            family: 2000,
+            compact: 3700,
+            compactPlus: 6500,
+            premium: 10500
+        };
+
+        function selectNextPackage(packageId) {
+            nextPackage = packageId;
+            calculateUpgradeCost();
+        }
+
+        function calculateRemainingDays() {
+            const paymentDay = parseInt(document.getElementById('payment-day').value);
+            const upgradeDay = parseInt(document.getElementById('upgrade-day').value);
+
+            if (!isNaN(paymentDay) && !isNaN(upgradeDay)) {
+                const remainingDays = 30 - (upgradeDay - paymentDay);
+                document.getElementById('remaining-days').innerText = remainingDays > 0 ? remainingDays : 0;
+                calculateUpgradeCost();
+            } else {
+                document.getElementById('remaining-days').innerText = '0';
+            }
+        }
+
+        function calculateUpgradeCost() {
+            if (!currentPackage || !nextPackage) return;
+
+            const remainingDays = parseInt(document.getElementById('remaining-days').innerText);
+            const balance = parseFloat(document.getElementById('balance-entry').value) || 0;
+            const currentPrice = packagePrices[currentPackage];
+            const nextPrice = packagePrices[nextPackage];
+            const cost = nextPrice - currentPrice;
+
+            const finalCost = remainingDays > 0 ? cost * (remainingDays / 30) : cost;
+            document.getElementById('info-output').innerText = `Upgrade cost from ${currentPackage} to ${nextPackage} is KSh ${finalCost.toFixed(2)}. Balance available: KSh ${balance.toFixed(2)}.`;
+        }
+
+        document.querySelectorAll('.div-2').forEach(element => {
+            element.addEventListener('click', function () {
+                const active = document.querySelector('.div-2.active');
+                if (active) {
+                    active.classList.remove('active');
+                }
+                this.classList.toggle('active');
+                currentPackage = this.id;
+                calculateUpgradeCost();
+            });
+        });
+    </script>
+<div><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Number in Excel Files</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #file-list, #check-result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .result-item, .file-item {
+            margin-top: 20px;
+        }
+        .row-data {
+            background-color: #f0f0f0;
+            padding: 5px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Filter Out <br>Customers on<br>offer Here</h1>
+    <input type="file" id="excel-upload" accept=".xls,.xlsx" multiple>
+    <div id="file-list"></div>
+    <input type="text" id="search-number" placeholder="Enter IUC number">
+    <button id="search-button">Find</button>
+    <div id="check-result"></div>
+
+    <script>
+        const fileListDiv = document.getElementById('file-list');
+        const checkResultDiv = document.getElementById('check-result');
+        let uploadedFiles = [];
+
+        document.getElementById('excel-upload').addEventListener('change', (event) => {
+            const newFiles = Array.from(event.target.files); // Get the newly selected files
+
+            // Add new files to the existing uploadedFiles array, avoiding duplicates
+            newFiles.forEach(newFile => {
+                if (!uploadedFiles.some(file => file.name === newFile.name && file.size === newFile.size)) {
+                    uploadedFiles.push(newFile);
+                }
+            });
+
+            // Update the displayed file list
+            updateFileList();
+        });
+
+        function updateFileList() {
+            fileListDiv.innerHTML = ''; // Clear the file list
+            uploadedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.classList.add('file-item');
+                fileItem.textContent = `${index + 1}. ${file.name}`;
+                fileListDiv.appendChild(fileItem);
+            });
+        }
+
+        document.getElementById('search-button').addEventListener('click', () => {
+            const searchNumber = document.getElementById('search-number').value.trim();
+
+            // Reset the results container
+            checkResultDiv.innerHTML = '';
+
+            // Check if files are uploaded and search number is entered
+            if (uploadedFiles.length === 0 || !searchNumber) {
+                checkResultDiv.textContent = 'Please upload Excel files and enter a number to search.';
+                return;
+            }
+
+            let numberFound = false;
+            let filesProcessed = 0;
+
+            uploadedFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+
+                    workbook.SheetNames.forEach(sheetName => {
+                        const worksheet = workbook.Sheets[sheetName];
+                        const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                        json.forEach((row, rowIndex) => {
+                            row.forEach((cell, colIndex) => {
+                                if (cell && cell.toString().trim() === searchNumber) {
+                                    numberFound = true;
+                                    const rowDataDiv = document.createElement('div');
+                                    rowDataDiv.classList.add('row-data');
+                                    rowDataDiv.textContent = `Found in ${file.name} (Sheet: ${sheetName}, Row: ${rowIndex + 1}): ${row.join(', ')}`;
+                                    checkResultDiv.appendChild(rowDataDiv);
+                                }
+                            });
+                        });
+                    });
+
+                    filesProcessed++;
+                    // Once all files are processed
+                    if (filesProcessed === uploadedFiles.length) {
+                        if (!numberFound) {
+                            checkResultDiv.textContent = `Number ${searchNumber} not found in any uploaded files.`;
+                        }
+                    }
+                };
+
+                reader.readAsArrayBuffer(file);
+            });
+        });
+    </script>
+</body>
+</html>
+ <d/div>
+</body>
+</html>
